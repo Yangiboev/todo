@@ -19,7 +19,7 @@ jobs:
         echo "dellicon/${{ github.event.repository.name }}" > IMAGE_NAME
         
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $(cat IMAGE_NAME):$(cat TAG)
+      run: docker build . --file docker/Dockerfile --tag $(cat IMAGE_NAME):$(cat TAG)
       
     - name: Image push
       run: docker push $(cat IMAGE_NAME):$(cat TAG)
