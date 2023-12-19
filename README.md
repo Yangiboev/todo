@@ -38,4 +38,8 @@
 ```
 ### SWAGGER UI:
 
+# If you run locally:
 https://localhost:5050/swagger/index.html
+
+# Checkout:
+https://app.danke.uz/swagger/index.html
