@@ -1,0 +1,28 @@
+server:
+  AppVersion: 1.0.0
+  Port: :5050
+  PprofPort: :5555
+  Mode: Development
+  JwtSecretKey: secretkey
+  CookieName: jwt-token
+  ReadTimeout: 5
+  WriteTimeout: 5
+  CtxDefaultTimeout: 12
+  CSRF: true
+  Debug: false
+
+logger:
+  Development: true
+  DisableCaller: false
+  DisableStacktrace: false
+  Encoding: json
+  Level: info
+
+postgres:
+  PostgresqlHost: 0.0.0.0
+  PostgresqlPort: 5432
+  PostgresqlUser: postgres
+  PostgresqlPassword: postgres
+  PostgresqlDbname: todo_db
+  PostgresqlSslmode: false
+  PgDriver: pgx
