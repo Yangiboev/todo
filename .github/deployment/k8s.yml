@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment                
+metadata:
+  name: backend          
+spec:
+  replicas: 1                   
+  selector:
+    matchLabels:
+      app: backend       
+  template:                     
+    metadata:
+      labels:                   
+        app: backend 
+    spec:                       
+      containers:
+      - name: backend
+        image: dellicon/todo:latest
+        ports:
+          - containerPort: 5050 
+        livenessProbe:          
+          httpGet:
+            path: /health
+            port: 5050
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 5
+      imagePullSecrets:
+      - name: registry-key 
+---
+apiVersion: v1
+kind: Service                   
+metadata:
+  name: backend  
+spec:
+  type: NodePort                
+  ports:                        
+  - name: http
+    port: 9090
+    targetPort: 5050
+  selector:
+    app: backend       

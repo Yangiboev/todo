@@ -1,0 +1,190 @@
+definitions:
+  models.ToDo:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      title:
+        minLength: 3
+        type: string
+    required:
+    - title
+    type: object
+  models.ToDoSwagger:
+    properties:
+      title:
+        minLength: 3
+        type: string
+    required:
+    - title
+    type: object
+  models.ToDosList:
+    properties:
+      has_more:
+        type: boolean
+      page:
+        type: integer
+      size:
+        type: integer
+      todos:
+        items:
+          $ref: '#/definitions/models.ToDo'
+        type: array
+      total_count:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status": "Healthy!"}'
+          schema:
+            type: string
+      summary: Health check endpoint
+      tags:
+      - Health
+  /todos:
+    post:
+      consumes:
+      - application/json
+      description: create new todo
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ToDoSwagger'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ToDo'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Create new todo
+      tags:
+      - ToDos
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete todo
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Delete todo
+      tags:
+      - ToDos
+    get:
+      consumes:
+      - application/json
+      description: Get todo by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ToDo'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Get todo
+      tags:
+      - ToDos
+    put:
+      consumes:
+      - application/json
+      description: update new todo
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ToDoSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ToDoSwagger'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Update todo
+      tags:
+      - ToDos
+  /todos/list:
+    get:
+      consumes:
+      - application/json
+      description: Get all todo
+      parameters:
+      - description: title
+        in: query
+        name: title
+        type: string
+      - description: page number
+        format: page
+        in: query
+        name: page
+        type: integer
+      - description: number of elements per page
+        format: size
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ToDosList'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Get ToDos
+      tags:
+      - ToDos
+swagger: "2.0"

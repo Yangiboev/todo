@@ -1,0 +1,25 @@
+name: Build and Push Docker Image to Docker Hub
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: Set Tag in env variable
+      run: |
+        echo "${GITHUB_SHA:0:7}" > TAG
+        echo "dellicon/${{ github.event.repository.name }}" > IMAGE_NAME
+        
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag $(cat IMAGE_NAME):$(cat TAG)
+      
+    - name: Image push
+      run: docker push $(cat IMAGE_NAME):$(cat TAG)
